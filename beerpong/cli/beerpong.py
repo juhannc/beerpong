@@ -1,3 +1,4 @@
+"""CLI interface for the beerpong tool."""
 import warnings
 
 from PyQt6.QtWidgets import QApplication
@@ -6,6 +7,8 @@ from beerpong.gui.gui import BeerpongGUI
 
 
 class Beerpong:
+    """Class to run the beerpong tool."""
+
     def __init__(self):
         self.app = QApplication([])
         self.gui = BeerpongGUI()

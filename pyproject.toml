@@ -4,3 +4,8 @@ requires = [
   "setuptools >= 43.0.0",
   "wheel"
 ]
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = [
+  'no-name-in-module'
+]

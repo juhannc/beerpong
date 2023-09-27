@@ -14,6 +14,7 @@ class Beerpong:
         self.gui = BeerpongGUI()
 
     def run(self):
+        """Run the beerpong tool."""
         self.gui.show()
         self.app.exec()
 

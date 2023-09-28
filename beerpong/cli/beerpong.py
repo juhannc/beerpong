@@ -30,4 +30,4 @@ if __name__ == "__main__":
         RuntimeWarning("Please use the cli tools to run beerpong."),
         stacklevel=2,
     )
-    beerpong()  # pylint: disable=no-value-for-parameter
+    beerpong()

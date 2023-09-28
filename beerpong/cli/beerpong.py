@@ -3,7 +3,7 @@ import warnings
 
 from PyQt6.QtWidgets import QApplication
 
-from beerpong.gui.gui import BeerpongGUI
+from beerpong.gui.management import ManagementGUI
 
 
 class Beerpong:
@@ -11,7 +11,7 @@ class Beerpong:
 
     def __init__(self):
         self.app = QApplication([])
-        self.gui = BeerpongGUI()
+        self.gui = ManagementGUI()
 
     def run(self):
         """Run the beerpong tool."""

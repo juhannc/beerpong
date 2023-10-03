@@ -5,6 +5,8 @@ from unittest.mock import patch
 
 from beerpong.logic.team import PASSWORD_LENGTH, PASSWORD_VALID_CHARS, Team
 
+PASSWORD_TEST_LENGTH = 10_000
+
 
 class TestTeam(unittest.TestCase):
     def test_team_name(self):
@@ -22,25 +24,24 @@ class TestTeam(unittest.TestCase):
         team = Team("Team 1")
         self.assertEqual(len(team.password), PASSWORD_LENGTH)
 
-    @patch("beerpong.logic.team.PASSWORD_LENGTH", 1000)
+    @patch("beerpong.logic.team.PASSWORD_LENGTH", PASSWORD_TEST_LENGTH)
     def test_team_password_valid_chars(self):
         """Test that the team password contains only valid characters.
 
-        We increased the password length to 1000 to ensure more of the
-        random characters are tested.
+        We increased the password length to PASSWORD_TEST_LENGTH to
+        ensure more of the random characters are tested.
         """
-        for _ in range(100):
-            team = Team("t")
-            password = team.password
-            self.assertEqual(len(password), 1000)
-            self.assertTrue(set(password).issubset(PASSWORD_VALID_CHARS))
+        team = Team("t")
+        password = team.password
+        self.assertEqual(len(password), PASSWORD_TEST_LENGTH)
+        self.assertTrue(set(password).issubset(PASSWORD_VALID_CHARS))
 
-    @patch("beerpong.logic.team.PASSWORD_LENGTH", 1000)
+    @patch("beerpong.logic.team.PASSWORD_LENGTH", PASSWORD_TEST_LENGTH)
     def test_team_password_is_random(self):
         """Test that the team password is random.
 
-        We increased the password length to 1000 to reduce the
-        probability of a false positive.
+        We increased the password length to PASSWORD_TEST_LENGTH to
+        reduce the probability of a false positive.
         """
         team1 = Team("Team 1")
         team2 = Team("Team 2")

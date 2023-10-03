@@ -1,6 +1,7 @@
 """Module to represent a generic team."""
 import string
 from dataclasses import dataclass, field
+from hashlib import sha3_256
 from random import SystemRandom
 
 PASSWORD_LENGTH = 4
@@ -19,7 +20,7 @@ class Team:
         hash=False,
         compare=False,
     )
-    _password_hash: int = field(default_factory=int, init=False)
+    _password_hash: str = field(default_factory=str, init=False)
 
     def __post_init__(self):
         """Post init steps to ensure the team is valid.
@@ -29,7 +30,7 @@ class Team:
         if not self.name:
             raise ValueError("Team name cannot be empty")
         self._otp = self.__generate_password_string()
-        self._password_hash = hash(self._otp)
+        self._password_hash = sha3_256(self._otp.encode("ascii")).hexdigest()
 
     def __generate_password_string(self) -> str:
         """Generate a random password for the team.
@@ -49,7 +50,7 @@ class Team:
         We could transform the input into lower-case letters and digits
         to make the password case-insensitive.
         """
-        return hash(password) == self._password_hash
+        return sha3_256(password.encode("ascii")).hexdigest() == self._password_hash
 
     @property
     def password(self) -> str:

@@ -26,7 +26,7 @@ repos:
     args: [--profile, black]
     name: isort (python)
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.5
+  rev: v2.2.6
   hooks:
   - id: codespell
     name: Fixing common spelling mistakes
@@ -44,7 +44,7 @@ repos:
   - id: absolufy-imports
     name: Make python imports absolute
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.13.0
+  rev: v3.14.0
   hooks:
   - id: pyupgrade
     name: Upgrade common mistakes
@@ -60,8 +60,8 @@ repos:
     - flake8-comprehensions
     - flake8-simplify
     - pep8-naming
-- repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.0.291
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.0.292
   hooks:
   - id: ruff
     name: Linting Python code (ruff)

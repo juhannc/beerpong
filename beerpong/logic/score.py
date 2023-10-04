@@ -2,11 +2,16 @@
 
 from dataclasses import dataclass
 
+from annotated_types import Gt
+from typing_extensions import (  # TODO: Use typing.Annotated when dropping 3.8 support
+    Annotated,
+)
+
 
 @dataclass
 class Score:
-    left: int
-    right: int
+    left: Annotated[int, Gt(0)]
+    right: Annotated[int, Gt(0)]
 
     def __post_init__(self):
         """Post init steps to ensure the score is valid.

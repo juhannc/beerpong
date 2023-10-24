@@ -16,7 +16,7 @@ repos:
   - id: end-of-file-fixer
   - id: trailing-whitespace
 - repo: https://github.com/psf/black
-  rev: 23.9.1
+  rev: 23.10.1
   hooks:
   - id: black
 - repo: https://github.com/pycqa/isort
@@ -61,7 +61,7 @@ repos:
     - flake8-simplify
     - pep8-naming
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.0.292
+  rev: v0.1.1
   hooks:
   - id: ruff
     name: Linting Python code (ruff)
@@ -74,14 +74,14 @@ repos:
   - id: pretty-format-toml
     args: [--autofix]
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.6.0
+  rev: v1.6.1
   hooks:
   - id: mypy
     name: Static typechecking (mypy)
     exclude: ^tests/
     # additional_dependencies: [numpy>=1.23]  # TODO @johannchristensen@outlook.de: add common dependencies in accordance with the setup.cfg file
 - repo: https://github.com/PyCQA/prospector
-  rev: 1.10.2
+  rev: v1.10.3
   hooks:
   - id: prospector
     name: Analyzing Python code (prospector)

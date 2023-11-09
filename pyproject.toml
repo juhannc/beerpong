@@ -33,7 +33,6 @@ version = "0.0.0"
 
 [project.optional-dependencies]
 all = ["beerpong[docs,tests]"]
-# Has to be manually kept in sync with docs/requirements.txt
 docs = [
   "sphinx==7.2.6",
   "sphinx_mdinclude==0.5.3",

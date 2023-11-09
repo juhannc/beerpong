@@ -5,7 +5,7 @@ from hashlib import sha3_256
 from random import SystemRandom
 
 PASSWORD_LENGTH = 4
-PASSWORD_VALID_CHARS = string.ascii_lowercase + string.digits
+PASSWORD_VALID_CHARS = string.ascii_uppercase + string.digits
 
 
 @dataclass

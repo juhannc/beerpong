@@ -59,6 +59,7 @@ repos:
     - flake8-builtins
     - flake8-comprehensions
     - flake8-simplify
+    - flake8-pyproject
     - pep8-naming
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.1.5
@@ -79,7 +80,7 @@ repos:
   - id: mypy
     name: Static typechecking (mypy)
     exclude: ^tests/
-    # additional_dependencies: [numpy>=1.23]  # TODO @johannchristensen@outlook.de: add common dependencies in accordance with the setup.cfg file
+    # additional_dependencies: [numpy>=1.23]  # TODO @johannchristensen@outlook.de: add common dependencies in accordance with the pyproject.toml file
 - repo: https://github.com/PyCQA/prospector
   rev: v1.10.3
   hooks:

@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from annotated_types import Gt
+from annotated_types import Ge
 from typing_extensions import (  # TODO: Use typing.Annotated when dropping 3.8 support
     Annotated,
 )
@@ -57,7 +57,7 @@ class Bracket:
 
     @score.setter
     def score(
-        self, value: Score | tuple[Annotated[int, Gt(0)], Annotated[int, Gt(0)]]
+        self, value: Score | tuple[Annotated[int, Ge(0)], Annotated[int, Ge(0)]]
     ) -> None:
         """Set the score for the bracket."""
         if isinstance(value, Score):

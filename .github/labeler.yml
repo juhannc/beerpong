@@ -1,26 +1,39 @@
 frontend:
-- any: [beerpong/gui/**, '**/*.ui']
+- beerpong/gui/**
+- '**/*.ui'
 
 backend:
-- any: [beerpong/logic/**]
+- beerpong/logic/**
 
 python:
-- any: ['**/*.py', '**/*.pyi', '**/*.pyx']
+- '**/*.py'
+- '**/*.pyi'
+- '**/*.pyx'
 
 packaging:
-- any: [MANIFEST.in, setup.py, setup.cfg, pyproject.toml, VERSION]
+- MANIFEST.in
+- setup.py
+- setup.cfg
+- pyproject.toml
+- VERSION
 
 pre-commit:
 - .pre-commit-config.yaml
 
 docs:
-- any: [docs/**, README.md]
+- docs/**
+- README.md
 
 tests:
-- any: [tests/**, .github/workflows/pytest.yml]
+- tests/**
+- .github/workflows/pytest.yml
 
 workflows:
 - .github/workflows/**
 
 dependabot:
 - .github/dependabot.yml
+
+labels:
+- .github/labeler.yml
+- .github/workflows/labeler.yml

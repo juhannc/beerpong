@@ -10,7 +10,15 @@ PASSWORD_VALID_CHARS = string.ascii_uppercase + string.digits
 
 @dataclass
 class Team:
-    """Class object to represent a generic team."""
+    """Class object to represent a generic team.
+
+    A Team is an abstract concept that can be used to represent a
+    real-world team. It has a name and a password. The password is
+    generated automatically and can be used to authenticate the team.
+
+    :param name: The name of the team.
+    :type name: str
+    """
 
     name: str
     _otp: str = field(
@@ -49,6 +57,8 @@ class Team:
         Also, currently we are only using lower-case letters and digits.
         We could transform the input into lower-case letters and digits
         to make the password case-insensitive.
+
+        :param password: The password to validate.
         """
         return sha3_256(password.encode("ascii")).hexdigest() == self._password_hash
 
@@ -56,12 +66,20 @@ class Team:
     def password(self) -> str:
         """Return the one-time password for the team.
 
-        After the password has been read once, it is deleted."""
+        After the password has been read once, it is deleted.
+
+        :return: The one-time password for the team.
+        """
         tmp_otp = self._otp
         self._otp = ""
         return tmp_otp
 
     @password.setter
     def password(self, value: str):
-        """Setting the password is not allowed."""
+        """Setting the password is not allowed.
+
+        :param value: The password to set (not allowed).
+
+        :raises AttributeError: Setting the password is not allowed.
+        """
         raise AttributeError("Password cannot be set manually.")

@@ -10,6 +10,17 @@ from typing_extensions import (  # TODO: Use typing.Annotated when dropping 3.8 
 
 @dataclass
 class Score:
+    """Class to represent the score of a single bracket in the tournament.
+
+    A score is always a pair of integers greater or equal to zero,
+    representing the outcome of the underlying game.
+
+    :param left: The score of the left team.
+    :type left: int
+    :param right: The score of the right team.
+    :type right: int
+    """
+
     left: Annotated[int, Ge(0)]
     right: Annotated[int, Ge(0)]
 

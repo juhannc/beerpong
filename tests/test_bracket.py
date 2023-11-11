@@ -67,10 +67,10 @@ class TestBracket(unittest.TestCase):
         team2 = Team("Team 2")
         bracket1 = Bracket(team1, team2)
         bracket2 = Bracket(bracket1, None)
-        self.assertIsNone(bracket2.left)  # Still None because bracket1 has no score
+        self.assertTrue(isinstance(bracket2.left, Bracket))
         self.assertIsNone(bracket2.right)
 
-    def test_teams_are_none_if_brackets_have_no_winner(self):
+    def test_teams_are_brackets_if_brackets_have_no_winner(self):
         """Test that the teams are None if the brackets have no winner."""
         team1 = Team("Team 1")
         team2 = Team("Team 2")
@@ -79,8 +79,8 @@ class TestBracket(unittest.TestCase):
         bracket12 = Bracket(team1, team2)
         bracket34 = Bracket(team3, team4)
         bracket1234 = Bracket(bracket12, bracket34)
-        self.assertIsNone(bracket1234.left)
-        self.assertIsNone(bracket1234.right)
+        self.assertTrue(isinstance(bracket1234.left, Bracket))
+        self.assertTrue(isinstance(bracket1234.right, Bracket))
 
     def test_teams_as_brackets_propagate_winner_from_left(self):
         """Test that the teams can be brackets."""
@@ -204,6 +204,46 @@ class TestBracket(unittest.TestCase):
         bracket1234.score = (10, 5)
         self.assertEqual(bracket1234.winner, team1)
 
+    def test_winner_with_empty_bracket_as_right_team(self):
+        """Test that we can determine the winner if one team is an empty
+        bracket.
+        """
+        team1 = Team("Team 1")
+        bracket_e = Bracket(None, None)
+        bracket = Bracket(team1, bracket_e)
+        self.assertEqual(bracket.winner, team1)
+
+    def test_winner_with_empty_bracket_as_left_team(self):
+        """Test that we can determine the winner if one team is an empty
+        bracket.
+        """
+        team1 = Team("Team 1")
+        bracket_e = Bracket(None, None)
+        bracket = Bracket(bracket_e, team1)
+        self.assertEqual(bracket.winner, team1)
+
+    def test_no_winner_if_left_team_is_bracket_without_winner(self):
+        """Test that we cannot determine the winner if the left team is
+        a bracket without a winner.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(bracket1, team3)
+        self.assertIsNone(bracket2.winner)
+
+    def test_no_winner_if_right_team_is_bracket_without_winner(self):
+        """Test that we cannot determine the winner if the right team is
+        a bracket without a winner.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(team3, bracket1)
+        self.assertIsNone(bracket2.winner)
+
     def test_score_only_accepts_integers(self):
         """Test that the score only accepts integers."""
         team1 = Team("Team 1")
@@ -224,14 +264,14 @@ class TestBracket(unittest.TestCase):
         """Test that we cannot set the score if the left team is None."""
         team1 = Team("Team 1")
         bracket = Bracket(None, team1)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(RuntimeError):
             bracket.score = (10, 5)
 
     def test_setting_score_fails_if_right_team_is_none(self):
         """Test that we cannot set the score if the right team is None."""
         team1 = Team("Team 1")
         bracket = Bracket(team1, None)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(RuntimeError):
             bracket.score = (10, 5)
 
     def test_setting_score_fails_if_previous_left_winner_is_none(self):
@@ -243,7 +283,7 @@ class TestBracket(unittest.TestCase):
         team3 = Team("Team 3")
         bracket12 = Bracket(team1, team2)
         bracket123 = Bracket(bracket12, team3)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(RuntimeError):
             bracket123.score = (10, 5)
 
     def test_setting_score_fails_if_previous_right_winner_is_none(self):
@@ -255,7 +295,7 @@ class TestBracket(unittest.TestCase):
         team3 = Team("Team 3")
         bracket12 = Bracket(team1, team2)
         bracket123 = Bracket(team3, bracket12)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(RuntimeError):
             bracket123.score = (10, 5)
 
     def test_manually_setting_winner_raises_error(self):
@@ -281,3 +321,282 @@ class TestBracket(unittest.TestCase):
         bracket = Bracket(team1, team2)
         bracket.score = (10, 5)
         self.assertEqual(bracket.score, bracket._score)
+
+    def test_playable_with_two_teams(self):
+        """Test that a bracket with two teams is playable."""
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        self.assertTrue(bracket.is_playable)
+
+    def test_playable_if_left_team_is_bracket_with_winner(self):
+        """Test that a bracket is playable if the left team is a
+        bracket with a winner.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(bracket1, team3)
+        bracket1.score = (10, 5)
+        self.assertTrue(bracket2.is_playable)
+
+    def test_playable_if_right_team_is_bracket_with_winner(self):
+        """Test that a bracket is playable if the right team is a
+        bracket with a winner.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(team3, bracket1)
+        bracket1.score = (5, 10)
+        self.assertTrue(bracket2.is_playable)
+
+    def test_not_playable_if_left_team_is_bracket_without_winner(self):
+        """Test that a bracket is not playable if the left team is a
+        bracket without a winner.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(bracket1, team3)
+        self.assertFalse(bracket2.is_playable)
+
+    def test_not_playable_if_right_team_is_bracket_without_winner(self):
+        """Test that a bracket is not playable if the right team is a
+        bracket without a winner.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(team3, bracket1)
+        self.assertFalse(bracket2.is_playable)
+
+    def test_not_playable_if_left_team_is_none(self):
+        """Test that a bracket is not playable if the left team is
+        None.
+        """
+        team1 = Team("Team 1")
+        bracket = Bracket(None, team1)
+        self.assertFalse(bracket.is_playable)
+
+    def test_playable_if_both_teams_are_brackets_with_winners(self):
+        """Test that a bracket is playable if both teams are brackets
+        with winners.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        team4 = Team("Team 4")
+        bracket12 = Bracket(team1, team2)
+        bracket34 = Bracket(team3, team4)
+        bracket1234 = Bracket(bracket12, bracket34)
+        bracket12.score = (10, 5)
+        bracket34.score = (5, 10)
+        self.assertTrue(bracket1234.is_playable)
+
+    def test_not_playable_if_both_teams_are_brackets_without_winners(self):
+        """Test that a bracket is not playable if both teams are
+        brackets without winners.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        team4 = Team("Team 4")
+        bracket12 = Bracket(team1, team2)
+        bracket34 = Bracket(team3, team4)
+        bracket1234 = Bracket(bracket12, bracket34)
+        self.assertFalse(bracket1234.is_playable)
+
+    def test_not_playable_if_right_team_is_none(self):
+        """Test that a bracket is not playable if the right team is
+        None.
+        """
+        team1 = Team("Team 1")
+        bracket = Bracket(team1, None)
+        self.assertFalse(bracket.is_playable)
+
+    def test_not_playable_if_both_teams_are_none(self):
+        """Test that a bracket is not playable if both teams are
+        None.
+        """
+        bracket = Bracket(None, None)
+        self.assertFalse(bracket.is_playable)
+
+    def test_not_playable_if_score_is_set(self):
+        """Test that a bracket is not playable if the score is set."""
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        bracket.score = (10, 5)
+        self.assertFalse(bracket.is_playable)
+
+    def test_setting_playable_raises_error(self):
+        """Test that we cannot set the is_playable attribute."""
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        with self.assertRaises(AttributeError):
+            bracket.is_playable = True
+
+    def test_bracket_is_played_if_only_left_team_is_set(self):
+        """Test that a bracket is played if only the left team is set."""
+        team1 = Team("Team 1")
+        bracket = Bracket(team1, None)
+        self.assertTrue(bracket.is_played)
+
+    def test_bracket_is_played_if_only_right_team_is_set(self):
+        """Test that a bracket is played if only the right team is set."""
+        team1 = Team("Team 1")
+        bracket = Bracket(None, team1)
+        self.assertTrue(bracket.is_played)
+
+    def test_bracket_is_not_played_if_both_teams_are_set_and_no_score(self):
+        """Test that a bracket is not played if both teams are set and
+        no score is set.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        self.assertFalse(bracket.is_played)
+
+    def test_bracket_is_played_if_both_teams_are_set_and_score_is_set(self):
+        """Test that a bracket is played if both teams are set and a
+        score is set.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        bracket.score = (10, 5)
+        self.assertTrue(bracket.is_played)
+
+    def test_bracket_is_not_played_if_left_team_is_bracket(self):
+        """Test that a bracket is not played if the left team is a
+        bracket.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(bracket1, team3)
+        self.assertFalse(bracket2.is_played)
+
+    def test_bracket_is_not_played_if_right_team_is_bracket(self):
+        """Test that a bracket is not played if the right team is a
+        bracket.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(team3, bracket1)
+        self.assertFalse(bracket2.is_played)
+
+    def test_bracket_is_not_played_if_both_teams_are_brackets(self):
+        """Test that a bracket is not played if both teams are
+        brackets.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        team4 = Team("Team 4")
+        bracket12 = Bracket(team1, team2)
+        bracket34 = Bracket(team3, team4)
+        bracket1234 = Bracket(bracket12, bracket34)
+        self.assertFalse(bracket1234.is_played)
+
+    def test_bracket_is_played_if_bracket_is_empty(self):
+        """Test that a bracket is played if it is empty."""
+        bracket = Bracket(None, None)
+        self.assertTrue(bracket.is_played)
+
+    def test_bracket_is_played_if_teams_are_brackets_and_all_score_are_set(self):
+        """Test that a bracket is played if both teams are brackets
+        and all scores are set.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        team4 = Team("Team 4")
+        bracket12 = Bracket(team1, team2)
+        bracket34 = Bracket(team3, team4)
+        bracket1234 = Bracket(bracket12, bracket34)
+        bracket12.score = (10, 5)
+        bracket34.score = (5, 10)
+        bracket1234.score = (10, 5)
+        self.assertTrue(bracket1234.is_played)
+
+    def test_setting_is_played_raises_error(self):
+        """Test that we cannot set the is_played attribute."""
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        with self.assertRaises(AttributeError):
+            bracket.is_played = True
+
+    def test_bracket_is_empty_if_both_teams_are_none(self):
+        """Test that a bracket is empty if both teams are None."""
+        bracket = Bracket(None, None)
+        self.assertTrue(bracket.is_empty)
+
+    def test_bracket_is_not_empty_if_left_team_is_set(self):
+        """Test that a bracket is not empty if the left team is set."""
+        team1 = Team("Team 1")
+        bracket = Bracket(team1, None)
+        self.assertFalse(bracket.is_empty)
+
+    def test_bracket_is_not_empty_if_right_team_is_set(self):
+        """Test that a bracket is not empty if the right team is set."""
+        team1 = Team("Team 1")
+        bracket = Bracket(None, team1)
+        self.assertFalse(bracket.is_empty)
+
+    def test_bracket_is_not_empty_if_both_teams_are_set(self):
+        """Test that a bracket is not empty if both teams are set."""
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket = Bracket(team1, team2)
+        self.assertFalse(bracket.is_empty)
+
+    def test_bracket_is_not_empty_if_left_team_is_bracket(self):
+        """Test that a bracket is not empty if the left team is a
+        bracket.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(bracket1, None)
+        self.assertFalse(bracket2.is_empty)
+
+    def test_bracket_is_not_empty_if_right_team_is_bracket(self):
+        """Test that a bracket is not empty if the right team is a
+        bracket.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        bracket1 = Bracket(team1, team2)
+        bracket2 = Bracket(None, bracket1)
+        self.assertFalse(bracket2.is_empty)
+
+    def test_bracket_is_not_empty_if_both_teams_are_brackets(self):
+        """Test that a bracket is not empty if both teams are
+        brackets.
+        """
+        team1 = Team("Team 1")
+        team2 = Team("Team 2")
+        team3 = Team("Team 3")
+        team4 = Team("Team 4")
+        bracket12 = Bracket(team1, team2)
+        bracket34 = Bracket(team3, team4)
+        bracket1234 = Bracket(bracket12, bracket34)
+        self.assertFalse(bracket1234.is_empty)
+
+    def test_setting_is_empty_raises_error(self):
+        """Test that we cannot set the is_empty attribute."""
+        team1 = Team("Team 1")
+        bracket = Bracket(team1, None)
+        with self.assertRaises(AttributeError):
+            bracket.is_empty = True

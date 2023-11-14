@@ -2,6 +2,8 @@
 
 ![pytest](https://github.com/juhannc/beerpong/actions/workflows/pytest.yml/badge.svg)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/juhannc/beerpong/main.svg)](https://results.pre-commit.ci/latest/github/juhannc/beerpong/main)
+[![Documentation Status](https://readthedocs.org/projects/beerpong/badge/?version=latest)](https://beerpong.readthedocs.io/en/latest/?badge=latest)
+
 [![codecov](https://codecov.io/gh/juhannc/beerpong/branch/main/graph/badge.svg)](https://codecov.io/gh/juhannc/beerpong)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ba14c01e22ad0343af8c/maintainability)](https://codeclimate.com/github/juhannc/beerpong/maintainability)
 [![Code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/juhannc/beerpong)

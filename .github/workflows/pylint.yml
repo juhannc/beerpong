@@ -33,4 +33,4 @@ jobs:
         pip install -e .[tests]
     - name: Analysing the code with pylint
       run: |
-        pylint --fail-under=9 --output-format=text $(find -type f -name "*.py" ! -path "**/venv/**" ! -path "**/tests/**")
+        pylint --fail-under=9 --output-format=text $(find -type f -name "*.py" ! -path "**/venv/**" ! -path "**/tests/**" ! -path "**/docs/**")

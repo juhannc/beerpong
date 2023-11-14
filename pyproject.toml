@@ -1,11 +1,91 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-  "setuptools >= 43.0.0",
+  "setuptools >= 61.2",
   "wheel"
 ]
 
+[project]
+authors = [{name = "Johann Christensen", email = "johannchristensen@outlook.de"}]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: X11 Applications :: Qt",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Natural Language :: English",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Games/Entertainment"
+]
+dependencies = [
+  "PyQt6==6.5.2"
+]
+description = "Bracketing tool with beerpong in mind"
+license = {text = "GPLv3"}
+name = "beerpong"
+requires-python = ">=3.8"
+version = "0.0.0"
+
+[project.optional-dependencies]
+all = ["beerpong[tests]"]
+tests = [
+  "coverage",
+  "flake8",
+  "flake8-pyproject",
+  "mypy",
+  "pre-commit",
+  "pycodestyle",
+  "pytest >= 6.2.2",
+  "pytest-cov",
+  "pylint"
+]
+
+[project.readme]
+content-type = "text/markdown; charset=UTF-8"
+file = "README.md"
+
+[project.scripts]
+beerpong = "beerpong.cli.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/juhannc/beerpong.git"
+# Documentation = "https://readthedocs.org/beerpong"  # Docs are WIP
+Source = "https://github.com/juhannc/beerpong.git"
+Tracker = "https://github.com/juhannc/beerpong/issues"
+
+[tool.flake8]
+# E203: incorrectly triggers on array slices: <https://github.com/PyCQA/pycodestyle/issues/373>
+# SIM300: Yoda conditions might be more reliable but not more readable
+extend-ignore = "E203, SIM300"
+max-complexity = "10"
+max-line-length = "88"
+
+[tool.mypy]
+ignore_missing_imports = true
+python_version = "3.8"
+
 [tool.pylint.'MESSAGES CONTROL']
 disable = [
-  'no-name-in-module'
+  "no-name-in-module"
 ]
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+platforms = [
+  "macosx_13_x86_64",
+  "manylinux2014_x86_64",
+  "manylinux2014_aarch64",
+  "manylinux2014_armv7l",
+  "win_amd64"
+]
+
+[tool.setuptools.package-data]
+"beerpong" = ["py.typed"]
+
+[tool.setuptools.packages]
+find = {namespaces = false}

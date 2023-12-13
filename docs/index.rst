@@ -24,3 +24,6 @@ API
 
     beerpong.cli.cli
     beerpong.cli.beerpong
+    beerpong.logic.bracket
+    beerpong.logic.score
+    beerpong.logic.team

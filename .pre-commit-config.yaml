@@ -50,7 +50,7 @@ repos:
     name: Upgrade common mistakes
     args: [--py38-plus]
 - repo: https://github.com/PyCQA/flake8
-  rev: 6.1.0
+  rev: 7.0.0
   hooks:
   - id: flake8
     name: Linting Python code (flake8)
@@ -62,7 +62,7 @@ repos:
     - flake8-pyproject
     - pep8-naming
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.1.9
+  rev: v0.1.11
   hooks:
   - id: ruff
     name: Linting Python code (ruff)

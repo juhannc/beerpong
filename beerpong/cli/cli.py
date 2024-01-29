@@ -1,4 +1,5 @@
 """Command line interface for beerpong."""
+
 import sys
 
 from beerpong.cli.beerpong import beerpong

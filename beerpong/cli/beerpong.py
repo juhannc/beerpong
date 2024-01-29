@@ -1,4 +1,5 @@
 """CLI interface for the beerpong tool."""
+
 import warnings
 
 from PyQt6.QtWidgets import QApplication

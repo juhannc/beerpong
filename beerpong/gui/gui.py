@@ -1,4 +1,5 @@
 """Main gui for the tournament tool."""
+
 from PyQt6.QtCore import QSize
 from PyQt6.QtWidgets import QLineEdit, QMainWindow, QPushButton, QVBoxLayout, QWidget
 

@@ -34,7 +34,7 @@ version = "0.0.0"
 [project.optional-dependencies]
 all = ["beerpong[docs,tests]"]
 docs = [
-  "sphinx==7.2.6",
+  "sphinx==7.3.7",
   "sphinx_mdinclude==0.5.3",
   "sphinx_rtd_theme==2.0.0"
 ]

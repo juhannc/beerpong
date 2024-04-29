@@ -23,7 +23,7 @@ classifiers = [
   "Topic :: Games/Entertainment"
 ]
 dependencies = [
-  "PyQt6==6.5.2"
+  "PyQt6==6.7.0"
 ]
 description = "Bracketing tool with beerpong in mind"
 license = {text = "GPLv3"}

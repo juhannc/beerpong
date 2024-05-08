@@ -80,14 +80,12 @@ repos:
   - id: mypy
     name: Static typechecking (mypy)
     exclude: ^tests/
-    # additional_dependencies: [numpy>=1.23]  # TODO @johannchristensen@outlook.de: add common dependencies in accordance with the pyproject.toml file
 - repo: https://github.com/PyCQA/prospector
   rev: v1.10.3
   hooks:
   - id: prospector
     name: Analyzing Python code (prospector)
-    additional_dependencies:
-    - PyQt6
+    additional_dependencies: [annotated-types==0.5.0, PyQt6==6.5.2, typing-extensions==4.8.0]
 - repo: https://github.com/PyCQA/bandit
   rev: 1.7.8
   hooks:

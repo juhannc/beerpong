@@ -1,0 +1,85 @@
+"""Module to represent a generic team."""
+import string
+from dataclasses import dataclass, field
+from hashlib import sha3_256
+from random import SystemRandom
+
+PASSWORD_LENGTH = 4
+PASSWORD_VALID_CHARS = string.ascii_uppercase + string.digits
+
+
+@dataclass
+class Team:
+    """Class object to represent a generic team.
+
+    A Team is an abstract concept that can be used to represent a
+    real-world team. It has a name and a password. The password is
+    generated automatically and can be used to authenticate the team.
+
+    :param name: The name of the team.
+    :type name: str
+    """
+
+    name: str
+    _otp: str = field(
+        default_factory=str,
+        init=False,
+        repr=False,
+        hash=False,
+        compare=False,
+    )
+    _password_hash: str = field(default_factory=str, init=False)
+
+    def __post_init__(self):
+        """Post init steps to ensure the team is valid.
+
+        Check that the team name is not empty and generate a password.
+        """
+        if not self.name:
+            raise ValueError("Team name cannot be empty")
+        self._otp = self.__generate_password_string()
+        self._password_hash = sha3_256(self._otp.encode("ascii")).hexdigest()
+
+    def __generate_password_string(self) -> str:
+        """Generate a random password for the team.
+
+        The password is a string of random characters of a given length.
+        """
+        cryptogen = SystemRandom()
+        return "".join(cryptogen.choices(PASSWORD_VALID_CHARS, k=PASSWORD_LENGTH))
+
+    def validate_password(self, password: str) -> bool:
+        """Validate the password for the team.
+
+        Currently, we only check that the password is equal to the
+        generated password. In the future, we could add more checks.
+
+        Also, currently we are only using lower-case letters and digits.
+        We could transform the input into lower-case letters and digits
+        to make the password case-insensitive.
+
+        :param password: The password to validate.
+        """
+        return sha3_256(password.encode("ascii")).hexdigest() == self._password_hash
+
+    @property
+    def password(self) -> str:
+        """Return the one-time password for the team.
+
+        After the password has been read once, it is deleted.
+
+        :return: The one-time password for the team.
+        """
+        tmp_otp = self._otp
+        self._otp = ""
+        return tmp_otp
+
+    @password.setter
+    def password(self, value: str):
+        """Setting the password is not allowed.
+
+        :param value: The password to set (not allowed).
+
+        :raises AttributeError: Setting the password is not allowed.
+        """
+        raise AttributeError("Password cannot be set manually.")

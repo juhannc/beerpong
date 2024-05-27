@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.5.0
+  rev: v4.6.0
   hooks:
   - id: check-ast
   - id: check-builtin-literals
@@ -16,7 +16,7 @@ repos:
   - id: end-of-file-fixer
   - id: trailing-whitespace
 - repo: https://github.com/psf/black
-  rev: 24.2.0
+  rev: 24.4.2
   hooks:
   - id: black
 - repo: https://github.com/pycqa/isort
@@ -26,14 +26,14 @@ repos:
     args: [--profile, black]
     name: isort (python)
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.6
+  rev: v2.3.0
   hooks:
   - id: codespell
     name: Fixing common spelling mistakes
     args:
     - --write-changes
 - repo: https://github.com/igorshubovych/markdownlint-cli
-  rev: v0.39.0
+  rev: v0.41.0
   hooks:
   - id: markdownlint
     name: Fixing markdown linting errors
@@ -44,7 +44,7 @@ repos:
   - id: absolufy-imports
     name: Make python imports absolute
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.15.1
+  rev: v3.15.2
   hooks:
   - id: pyupgrade
     name: Upgrade common mistakes
@@ -62,20 +62,20 @@ repos:
     - flake8-pyproject
     - pep8-naming
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.3.2
+  rev: v0.4.5
   hooks:
   - id: ruff
     name: Linting Python code (ruff)
     args: [--fix, --exit-non-zero-on-fix]
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.12.0
+  rev: v2.13.0
   hooks:
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
   - id: pretty-format-toml
     args: [--autofix]
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.9.0
+  rev: v1.10.0
   hooks:
   - id: mypy
     name: Static typechecking (mypy)
